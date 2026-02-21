@@ -1,0 +1,145 @@
+---
+title: "tarea#2MD"
+author: "Jose Sanchez, Roberto Najera, Andres Pivaral  "
+date: "2026-02-21"
+output: html_document
+---
+# 1. Introducción
+
+## Contexto general del aprendizaje no supervisado
+
+El aprendizaje no supervisado es una rama del aprendizaje automático que se enfoca en analizar datos sin etiquetas previamente definidas. A diferencia del aprendizaje supervisado, en este enfoque no se cuenta con una variable objetivo, sino que el propósito es descubrir patrones ocultos, estructuras internas, relaciones o representaciones compactas dentro de los datos.
+
+Estos métodos son ampliamente utilizados en tareas como reducción de dimensionalidad, visualización de datos, extracción de características y separación de señales. En el análisis moderno de datos, los algoritmos no supervisados permiten comprender grandes volúmenes de información y facilitar la interpretación de estructuras complejas.
+
+## Objetivos del trabajo
+
+El presente trabajo tiene como objetivo comprender el funcionamiento teórico y práctico de distintos algoritmos de aprendizaje no supervisado, específicamente:
+
+- SVD (Singular Value Decomposition)
+- t-SNE (t-Distributed Stochastic Neighbor Embedding)
+- UMAP (Uniform Manifold Approximation and Projection)
+- ICA (Independent Component Analysis)
+
+Se busca analizar sus fundamentos teóricos, identificar sus principales usos y aplicaciones, implementarlos sobre conjuntos de datos reales y evaluar críticamente los resultados obtenidos.
+
+---
+
+# 2. Desarrollo
+
+## 2.1 SVD (Singular Value Decomposition)
+
+### Descripción teórica
+
+La Descomposición en Valores Singulares (SVD) es una técnica algebraica que factoriza una matriz \( A \) en tres matrices:
+
+\[
+A = U \Sigma V^T
+\]
+
+Donde:
+
+- \( U \) contiene los vectores singulares izquierdos.
+- \( \Sigma \) es una matriz diagonal con los valores singulares.
+- \( V^T \) contiene los vectores singulares derechos.
+
+El objetivo principal de SVD es descomponer una matriz en componentes ortogonales que capturan la mayor variabilidad posible de los datos. Es ampliamente utilizada para reducción de dimensionalidad, compresión de datos y sistemas de recomendación.
+
+A diferencia de PCA, SVD puede aplicarse directamente sobre cualquier matriz (no necesariamente centrada), y es una herramienta más general desde el punto de vista algebraico.
+
+### Usos y aplicaciones
+
+Los principales usos de SVD incluyen:
+
+- Reducción de dimensionalidad.
+- Compresión de información.
+- Sistemas de recomendación (por ejemplo, filtrado colaborativo).
+- Análisis semántico latente en procesamiento de lenguaje natural.
+
+Áreas de aplicación:
+
+- Sistemas de recomendación de películas o productos.
+- Procesamiento de imágenes.
+- Recuperación de información.
+- Minería de textos.
+
+---
+
+## 2.2 t-SNE (t-Distributed Stochastic Neighbor Embedding)
+
+### Descripción teórica
+
+t-SNE es un algoritmo de reducción de dimensionalidad no lineal diseñado principalmente para visualización de datos en espacios de baja dimensión (2D o 3D). Su objetivo es preservar las relaciones locales entre los puntos del espacio original.
+
+El algoritmo convierte distancias entre puntos en probabilidades y minimiza la divergencia de Kullback-Leibler entre las distribuciones de probabilidad en el espacio original y el espacio reducido. Utiliza una distribución t de Student en el espacio de baja dimensión para manejar el problema de amontonamiento ("crowding problem").
+
+A diferencia de PCA o SVD, t-SNE no busca preservar varianza global, sino estructuras locales, lo que lo hace especialmente útil para visualización.
+
+### Usos y aplicaciones
+
+Principales usos:
+
+- Visualización de datos de alta dimensionalidad.
+- Exploración de clusters.
+- Análisis exploratorio de datos complejos.
+
+Áreas de aplicación:
+
+- Bioinformática (análisis de expresión genética).
+- Procesamiento de imágenes.
+- Análisis de embeddings en NLP.
+- Análisis de datos médicos.
+
+---
+
+## 2.3 UMAP (Uniform Manifold Approximation and Projection)
+
+### Descripción teórica
+
+UMAP es un algoritmo de reducción de dimensionalidad no lineal basado en teoría de variedades y topología algebraica. Su objetivo es preservar tanto la estructura local como parte de la estructura global de los datos.
+
+El algoritmo construye un grafo de vecinos más cercanos en el espacio original y optimiza una representación de baja dimensión que conserve la estructura topológica del grafo.
+
+En comparación con t-SNE, UMAP suele ser más rápido, escalable y mantiene mejor la estructura global de los datos.
+
+### Usos y aplicaciones
+
+Principales usos:
+
+- Visualización de datos complejos.
+- Reducción de dimensionalidad previa a clustering.
+- Exploración de grandes conjuntos de datos.
+
+Áreas de aplicación:
+
+- Genómica y bioinformática.
+- Ciencia de datos.
+- Análisis de comportamiento de usuarios.
+- Procesamiento de señales.
+
+---
+
+## 2.4 ICA (Independent Component Analysis)
+
+### Descripción teórica
+
+ICA es un método de separación de señales que busca descomponer un conjunto de señales observadas en componentes estadísticamente independientes.
+
+El modelo asume que las señales observadas son combinaciones lineales de fuentes independientes desconocidas. El objetivo es estimar tanto las fuentes originales como la matriz de mezcla.
+
+A diferencia de PCA, que busca componentes no correlacionados, ICA busca componentes estadísticamente independientes, lo cual es una condición más fuerte.
+
+### Usos y aplicaciones
+
+Principales usos:
+
+- Separación de señales mezcladas.
+- Eliminación de ruido.
+- Extracción de características independientes.
+
+Áreas de aplicación:
+
+- Señales biomédicas (EEG, ECG).
+- Procesamiento de audio (problema del "cocktail party").
+- Análisis financiero.
+- Neurociencia.
