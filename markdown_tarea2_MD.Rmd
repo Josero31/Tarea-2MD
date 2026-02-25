@@ -1,6 +1,6 @@
 ---
 title: "tarea#2MD"
-author: "Jose Sanchez, Roberto Najera, Andres Pivaral  "
+author: "Jose Sanchez, Roberto Najera, Andre Pivaral  "
 date: "2026-02-21"
 output: html_document
 ---
@@ -63,6 +63,76 @@ Los principales usos de SVD incluyen:
 - Recuperación de información.
 - Minería de textos.
 
+### Aplicacion practica
+
+Dataset: MovieLens
+
+Resultados:
+```{r}
+# ==============================
+# SVD - MovieLens 100k
+# ==============================
+
+library(Matrix)
+library(RSpectra)
+library(ggplot2)
+
+# Cargar dataset
+ratings <- read.table("ml-100k/u.data", sep="\t",
+                      col.names=c("user_id","item_id","rating","timestamp"))
+
+# Crear matriz usuario-item
+rating_matrix <- sparseMatrix(
+  i = ratings$user_id,
+  j = ratings$item_id,
+  x = ratings$rating
+)
+
+# Aplicar SVD truncado (k componentes)
+k <- 20
+svd_result <- svds(rating_matrix, k = k)
+
+# Reconstrucción aproximada
+reconstructed <- svd_result$u %*% diag(svd_result$d) %*% t(svd_result$v)
+
+# Varianza explicada
+singular_values <- svd_result$d
+variance_explained <- singular_values^2 / sum(singular_values^2)
+
+df_var <- data.frame(
+  Component = 1:k,
+  Variance = variance_explained
+)
+
+ggplot(df_var, aes(x=Component, y=Variance)) +
+  geom_line() +
+  geom_point() +
+  ggtitle("Varianza explicada por cada componente - SVD") +
+  theme_minimal()
+```
+
+#### Interpretación:
+
+Lo que se observa:
+
+	•	El primer componente explica aproximadamente 57–58% de la varianza total.
+
+	•	El segundo componente explica cerca del 8%.
+
+	•	A partir del componente 3 la varianza disminuye rápidamente.
+
+	•	Después del componente 10 la contribución es muy pequeña.
+
+
+Esto indica que:
+
+	•	La mayoría de la información del sistema de recomendaciones está concentrada en los primeros pocos factores latentes.
+
+	•	El primer componente representa el patrón dominante en las calificaciones (tendencia general de usuarios a calificar alto o bajo).
+
+	•	Los siguientes componentes capturan preferencias más específicas (géneros, estilos, popularidad).
+
+
 ---
 
 ## 2.2 t-SNE (t-Distributed Stochastic Neighbor Embedding)
@@ -90,6 +160,78 @@ Principales usos:
 - Análisis de embeddings en NLP.
 - Análisis de datos médicos.
 
+### Aplicacion practica
+
+Dataset: Breast Cancer Wisconsin
+
+Resultados:
+```{r}
+# ==============================
+# t-SNE - Breast Cancer
+# ==============================
+
+library(Rtsne)
+library(ggplot2)
+
+data <- read.csv("data.csv")
+
+# Eliminar columna ID
+data_clean <- data[, 2:31]
+# Eliminar filas con NA
+data_clean <- na.omit(data_clean)
+
+# Separar etiquetas
+labels <- data_clean$diagnosis
+
+# Eliminar columna diagnosis y escalar
+features <- scale(data_clean[, -1])
+
+# Verificar que no haya NA
+sum(is.na(features))
+
+# Aplicar t-SNE
+set.seed(123)
+tsne_result <- Rtsne(features,
+                     dims = 2,
+                     perplexity = 30,
+                     verbose = TRUE,
+                     check_duplicates = FALSE)
+
+tsne_df <- data.frame(
+  Dim1 = tsne_result$Y[,1],
+  Dim2 = tsne_result$Y[,2],
+  Diagnosis = labels
+)
+
+ggplot(tsne_df, aes(x=Dim1, y=Dim2, color=Diagnosis)) +
+  geom_point(alpha=0.7) +
+  ggtitle("t-SNE - Breast Cancer Dataset") +
+  theme_minimal()
+```
+
+#### Interpretación:
+
+Lo que se observa:
+
+	•	Se forman dos clusters claramente diferenciados.
+
+	•	La clase M (maligno) está agrupada principalmente a la izquierda.
+
+	•	La clase B (benigno) está agrupada a la derecha.
+
+	•	Hay pocos puntos mezclados entre ambos grupos.
+
+t-SNE logró preservar las relaciones locales del dataset.
+
+
+Esto significa que:
+	
+	•	Las muestras con características similares están cercanas.
+	
+	•	Existe una separación natural entre tumores malignos y benignos.
+	
+	•	El dataset es estructuralmente separable
+	
 ---
 
 ## 2.3 UMAP (Uniform Manifold Approximation and Projection)
@@ -117,6 +259,53 @@ Principales usos:
 - Análisis de comportamiento de usuarios.
 - Procesamiento de señales.
 
+### Aplicacion practica
+
+Dataset: Breast Cancer Wisconsin
+
+Resultados:
+```{r}
+# ==============================
+# UMAP - Breast Cancer
+# ==============================
+
+library(umap)
+library(ggplot2)
+
+umap_result <- umap(features)
+
+umap_df <- data.frame(
+  Dim1 = umap_result$layout[,1],
+  Dim2 = umap_result$layout[,2],
+  Diagnosis = labels
+)
+
+ggplot(umap_df, aes(x=Dim1, y=Dim2, color=Diagnosis)) +
+  geom_point(alpha=0.7) +
+  ggtitle("UMAP - Breast Cancer Dataset") +
+  theme_minimal()
+```
+
+#### Interpretación:
+
+Lo que se observa:
+
+	•	También hay separación entre clases.
+
+	•	Los clusters parecen más compactos y organizados.
+
+	•	Se observa mejor estructura global que en t-SNE.
+
+UMAP preserva tanto estructura local como global mejor que t-SNE.
+
+Comparado con t-SNE:
+	
+	•	Mantiene distancias relativas más coherentes.
+	
+	•	Produce clusters más definidos.
+	
+	•	Es más eficiente computacionalmente.
+	
 ---
 
 ## 2.4 ICA (Independent Component Analysis)
@@ -143,3 +332,77 @@ Principales usos:
 - Procesamiento de audio (problema del "cocktail party").
 - Análisis financiero.
 - Neurociencia.
+
+### Aplicacion practica
+
+Dataset: BreastMIT-BIH Arrythmia Database P-Wave Annotations
+
+Resultados:
+```{r}
+# ==============================
+# ICA - EEG Signals
+# ==============================
+
+library(fastICA)
+library(ggplot2)
+
+# Simulación si no cargan directamente el EEG
+# (Reemplazar con datos reales si los leen desde archivo)
+
+set.seed(123)
+
+t <- seq(0, 1, length.out=1000)
+s1 <- sin(2*pi*10*t)
+s2 <- sign(sin(2*pi*5*t))
+
+S <- cbind(s1, s2)
+A <- matrix(c(1,0.5,0.5,1), 2,2)
+X <- S %*% A
+
+ica_result <- fastICA(X, n.comp=2)
+
+par(mfrow=c(2,1))
+plot(ica_result$S[,1], type="l", main="Componente Independiente 1")
+plot(ica_result$S[,2], type="l", main="Componente Independiente 2")
+```
+
+#### Interpretación:
+
+Componente Independiente 1
+	
+	•	Señal cuadrada.
+	
+	•	Patrón tipo onda rectangular.
+
+
+Componente Independiente 2
+
+	•	Señal sinusoidal.
+
+	•	Frecuencia constante.
+
+
+Lo que significa:
+
+El ICA logró separar correctamente las señales mezcladas.
+
+Recordemos:
+
+	•	Se mezclaron artificialmente dos señales.
+
+	•	ICA recuperó las fuentes originales.
+
+Diferencia clave:
+
+	•	PCA/SVD → maximiza varianza.
+
+	•	ICA → maximiza independencia estadística.
+
+
+Aquí vemos independencia real:
+
+	•	Una señal es sinusoidal.
+
+	•	La otra es cuadrada.
+
+	•	Son estadísticamente independientes.
