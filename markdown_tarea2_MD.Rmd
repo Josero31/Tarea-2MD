@@ -1,9 +1,20 @@
----
-title: "tarea#2MD"
-author: "Jose Sanchez, Roberto Najera, Andre Pivaral  "
-date: "2026-02-21"
-output: html_document
----
+
+Universidad del Valle de Guatemala  
+Facultad de Ingeniería  
+Departamento de Ciencias de la Computación  
+CC3074 – Minería de Datos  
+Semestre I – 2026  
+
+# Tarea 2  
+## Otros algoritmos de aprendizaje no supervisado  
+
+**Integrantes:**  
+- Jose Sanchez  
+- Roberto Najera  
+- Andre Pivaral  
+
+**Fecha:** 21 de febrero de 2026  
+
 # 1. Introducción
 
 ## Contexto general del aprendizaje no supervisado
@@ -406,3 +417,79 @@ Aquí vemos independencia real:
 	•	La otra es cuadrada.
 
 	•	Son estadísticamente independientes.
+	
+
+
+# 3. Comparación general
+
+## Comparación entre algoritmos
+
+| Característica | SVD | t-SNE | UMAP | ICA |
+|---------------|------|--------|--------|------|
+| Tipo de método | Factorización matricial | Embedding probabilístico | Embedding basado en grafos | Separación de señales |
+| Naturaleza | Lineal | No lineal | No lineal | Lineal |
+| Objetivo principal | Reducir dimensionalidad maximizando varianza | Preservar estructura local para visualización | Preservar estructura local y parcialmente global | Recuperar componentes estadísticamente independientes |
+| Preserva | Varianza global | Vecindad local | Vecindad local y estructura global parcial | Independencia estadística |
+| Supuesto clave | Datos representables en subespacio lineal | Similaridad basada en distancias | Datos distribuidos sobre variedad topológica | Mezcla lineal de fuentes independientes |
+| Interpretabilidad | Alta (componentes ortogonales) | Baja | Media | Media |
+| Sensibilidad a parámetros | Baja | Alta (perplexity) | Media (n_neighbors, min_dist) | Media |
+| Escalabilidad | Alta | Media-Baja | Alta | Media |
+| Uso típico | Sistemas de recomendación, compresión | Visualización de clusters | Visualización y reducción previa a clustering | Procesamiento de señales biomédicas |
+| Tipo de datos ideal | Matrices grandes y dispersas | Datos de alta dimensionalidad | Grandes volúmenes de datos complejos | Señales mezcladas |
+
+---
+
+## Ventajas y limitaciones comparativas
+
+| Algoritmo | Ventajas principales | Limitaciones principales |
+|------------|----------------------|---------------------------|
+| **SVD** | Método matemáticamente sólido, estable y eficiente. Alta interpretabilidad. | Solo modela relaciones lineales. No captura estructuras complejas no lineales. |
+| **t-SNE** | Excelente separación visual de clusters. Muy útil en análisis exploratorio. | No preserva estructura global. Sensible a parámetros. No reproducible sin semilla fija. |
+| **UMAP** | Más rápido que t-SNE. Mejor preservación global. Escalable a datasets grandes. | Interpretación menos intuitiva. Dependiente de hiperparámetros. |
+| **ICA** | Recupera señales independientes. Útil en EEG, audio y señales biomédicas. | Supone independencia estadística real. Sensible al ruido. No siempre solución única. |
+
+---
+
+## Comparación conceptual final
+
+- **SVD e ICA** son métodos lineales.
+- **t-SNE y UMAP** son métodos no lineales.
+- **SVD** maximiza varianza.
+- **ICA** maximiza independencia estadística.
+- **t-SNE** prioriza relaciones locales.
+- **UMAP** busca equilibrio entre estructura local y global.
+
+	
+	# 4. Conclusiones
+
+## Principales aprendizajes
+
+- SVD es altamente útil para factorización de matrices dispersas y sistemas de recomendación.
+- t-SNE es ideal para visualización exploratoria de datos complejos.
+- UMAP ofrece mejor balance entre estructura local y global.
+- ICA permite separar señales independientes cuando se cumple el supuesto de mezcla lineal.
+
+## Dificultades encontradas
+
+- Selección adecuada de parámetros en t-SNE.
+- Interpretación correcta de componentes latentes en SVD.
+- Comprensión conceptual de independencia estadística en ICA.
+- Diferenciación clara entre reducción lineal y no lineal.
+
+## Reflexión final del grupo
+
+Cada algoritmo tiene un propósito distinto dentro del aprendizaje no supervisado. No existe un método universalmente mejor; la elección depende del problema, tipo de datos y objetivo del análisis. La práctica permitió comprender que la reducción dimensional no solo es un procedimiento matemático, sino una herramienta estratégica para interpretar estructuras complejas en datos reales.
+
+---
+
+# 5. Referencias
+
+- Bishop, C. M. (2006). *Pattern Recognition and Machine Learning*. Springer.
+- Van der Maaten, L., & Hinton, G. (2008). Visualizing Data using t-SNE. Journal of Machine Learning Research.
+- McInnes, L., Healy, J., & Melville, J. (2018). UMAP: Uniform Manifold Approximation and Projection.
+- Hyvärinen, A., Karhunen, J., & Oja, E. (2001). Independent Component Analysis.
+- MovieLens 100k Dataset. GroupLens Research.
+- Breast Cancer Wisconsin Dataset. UCI Machine Learning Repository.
+- Documentación oficial de R: `Rtsne`, `umap`, `fastICA`, `RSpectra`.
+
+---
