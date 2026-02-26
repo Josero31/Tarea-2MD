@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 
 Universidad del Valle de Guatemala  
 Facultad de Ingeniería  
